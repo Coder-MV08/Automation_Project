@@ -14,7 +14,6 @@ test('fill customer details and proceed to checkout', async ({ page }) => {
     await productPage.navigateToProductPage();
     await productPage.addToCart();
     await expect(productPage.itemAddedMessage).toBeVisible();
-    await page.pause();
     //await productPage.closeMessage();
    
     const cartPage = new CartPage(page);
@@ -24,9 +23,17 @@ test('fill customer details and proceed to checkout', async ({ page }) => {
 
     const customerDetailsPage = new CustomerDetailsPage(page);
     await customerDetailsPage.selectCountryAndState('India', 'Delhi','New Delhi');
-    await customerDetailsPage.fillCustomerDetails('Test User', '123 Main St', '9999999999');
+    await customerDetailsPage.fillCustomerDetails(
+      'Test',
+      'User',
+      '123 Main St',
+      '110001',
+      'testuser@example.com',
+      '9999999999'
+    );
     console.log ("Customer details filled successfully");
     await customerDetailsPage.proceedToReview();
+    await expect(page.getByRole('heading', {name: 'Review Your Order'})).toBeVisible();
   //await page.pause();
   //await expect (page.getByText('Review Your Order',{exact:true})).toBeVisible();
 
