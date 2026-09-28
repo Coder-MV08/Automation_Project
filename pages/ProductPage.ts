@@ -5,7 +5,6 @@ export class ProductPage{
     wallet : Locator;
     walletAddToCart: Locator;
     itemAddedMessage: Locator;
-    closeBtn: Locator;
     plusbtn : Locator;
     productCards: Locator;
 
@@ -16,7 +15,6 @@ export class ProductPage{
         this.wallet = page.getByText('Wallet', {exact:true}); 
         this.walletAddToCart = this.wallet.locator('..').locator('..').locator('..').getByRole('button', {name:'Add to Cart'});
         this.itemAddedMessage =page.getByText('Item added successfully').last();
-        this.closeBtn =  this.walletAddToCart.getByRole('button', {name:'Close'});
         
 this.plusbtn = this.wallet
   .locator('..')
@@ -42,15 +40,20 @@ async setProductQuantity(quantity: number) {
 
 async getAvailableProductNames(): Promise<string[]> {
     return this.productCards
-      .filter({hasText: 'Available'})
+    .filter({has: this.page.getByText('Available', {exact: true})})
       .locator('h2')
       .allTextContents();
 }
 
 async addProductToCart(productName: string) {
+    const cartLink = this.page.getByRole('link', {name: /^Cart(?:\s+\d+)?$/});
+    const currentCount = Number((await cartLink.innerText()).match(/\d+/)?.[0] ?? 0);
     const productCard = this.productCards.filter({
         has: this.page.getByRole('heading', {name: productName, exact: true})
     });
     await productCard.getByRole('button', {name: 'Add to cart', exact: true}).click();
+    await this.page.getByRole('link', {
+        name: new RegExp(`^Cart\\s+${currentCount + 1}$`)
+    }).waitFor({state: 'visible'});
 }
 }

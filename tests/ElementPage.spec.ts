@@ -37,9 +37,8 @@ test('Validating UI Elements 1', async ({ page }) => {
 
     //Button Interaction Practice
     await elementPage.clickButton();
-    await expect ( page.getByText( 'You Clicked Me!')).toBeVisible;
+    await expect(page.getByText('You Clicked Me!')).toBeVisible();
     
-    await page.pause();
     await elementPage.doubleClick();
-    await expect ( page.getByText ( 'You Double Clicked Me!')).toBeVisible;
+    await expect(page.getByText('You Double Clicked Me!')).toBeVisible();
 });
