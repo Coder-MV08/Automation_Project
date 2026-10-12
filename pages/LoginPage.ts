@@ -11,6 +11,7 @@ import { Locator, Page } from "playwright-core";
         signBtn: Locator;
         toastMessage: Locator;
         successToast: Locator;
+        toastMessage2: Locator;
 
         constructor(page: Page){ 
           this.page = page;
@@ -23,6 +24,7 @@ import { Locator, Page } from "playwright-core";
           this.signBtn = page.getByRole('button', {name:'Sign In'});
           this.successToast = page.getByRole('alert');
           this.toastMessage=page.getByText('Invalid credentials');
+          this.toastMessage2=page.getByText('Either username or password field is empty');
     }
     async navigateToLoginPage(){
          await this.page.goto('https://www.automationpracticehub.com/');
