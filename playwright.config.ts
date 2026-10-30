@@ -13,6 +13,7 @@ import { defineConfig, devices } from '@playwright/test';
  */
 export default defineConfig({
   testDir: './tests',
+  testIgnore:['**/HeroLogout.spec.ts','**/StorageState.spec.ts'],
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -30,14 +31,27 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+     screenshot: 'on',
+     video : 'on',
   },
 
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      name : 'setup',
+      testDir: './auth',
+      testMatch: 'finance.setup.ts',
     },
+
+    {
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'],
+      storageState: 'auth/finance.json',
+      },
+     //dependencies: ['setup'],
+    },
+      
+    ],
 
     /* Test against mobile viewports. */
     // {
@@ -58,7 +72,7 @@ export default defineConfig({
     //   name: 'Google Chrome',
     //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
     // },
-  ],
+  
 
   /* Run your local dev server before starting the tests */
   // webServer: {
