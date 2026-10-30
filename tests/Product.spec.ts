@@ -6,7 +6,7 @@ import { CustomerDetailsPage } from '../pages/CustomerDetailsPage.ts';
 import { ReviewPage } from '../pages/ReviewPage.ts';
 test ('Add wallet to cart', async ({ page }) => {
       const loginPage = new LoginPage(page);
-   // await loginPage.navigateToLoginPage();
+   await loginPage.navigateToLoginPage();
     await loginPage.login('sagesyntaxacademy','BuildingExcellence@111');
     await expect(page).toHaveURL('https://www.automationpracticehub.com/home');
     await expect(loginPage.successToast).toBeVisible();
